@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  ResultsViewController.swift
 //  PixabayCollections
 //
 //  Created by Russell Archer on 02/05/2020.
@@ -8,13 +8,14 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ResultsViewController: UIViewController {
 
+    var searchText: String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        title = "Results"
+        print("Searching for \(searchText!)...")
     }
-
-
 }
-
