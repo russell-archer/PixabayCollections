@@ -12,7 +12,7 @@ This demo app uses the Pixabay image API to return metadata related to a search 
 * Tapping the detail image modally presents a view showing all the image's available metadata
 * Long-pressing the image on the detail screen will present a menu of options (save to photos lib, share and show metadata)
 
-![](./readme-assets/img1.gif)
+![](/readme-assets/img1.gif)
 
 * The UI will be created programmatically (no storyboard)
 * The three main screens will be navigated using a UINavigationController
