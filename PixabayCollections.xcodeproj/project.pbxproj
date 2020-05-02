@@ -17,6 +17,8 @@
 		68895C5E245DEA4E00059A04 /* CustomGoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68895C5D245DEA4E00059A04 /* CustomGoButton.swift */; };
 		68895C61245DEF0300059A04 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68895C60245DEF0300059A04 /* Constants.swift */; };
 		68D89250245DE0B500952831 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D8924F245DE0B500952831 /* CustomTextField.swift */; };
+		68E2E847245E28CE00840919 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 68E2E846245E28CE00840919 /* README.md */; };
+		68E2E84A245E29D500840919 /* img1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 68E2E849245E29D500840919 /* img1.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		68895C5D245DEA4E00059A04 /* CustomGoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGoButton.swift; sourceTree = "<group>"; };
 		68895C60245DEF0300059A04 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		68D8924F245DE0B500952831 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		68E2E846245E28CE00840919 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		68E2E849245E29D500840919 /* img1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = img1.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +52,8 @@
 		684626A6245CE44100527E02 = {
 			isa = PBXGroup;
 			children = (
+				68E2E848245E296100840919 /* readme-assets */,
+				68E2E846245E28CE00840919 /* README.md */,
 				684626B1245CE44200527E02 /* PixabayCollections */,
 				684626B0245CE44200527E02 /* Products */,
 			);
@@ -135,6 +141,14 @@
 			path = Enums;
 			sourceTree = "<group>";
 		};
+		68E2E848245E296100840919 /* readme-assets */ = {
+			isa = PBXGroup;
+			children = (
+				68E2E849245E29D500840919 /* img1.jpg */,
+			);
+			path = "readme-assets";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -193,6 +207,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68E2E847245E28CE00840919 /* README.md in Resources */,
+				68E2E84A245E29D500840919 /* img1.jpg in Resources */,
 				684626BF245CE44300527E02 /* LaunchScreen.storyboard in Resources */,
 				684626BC245CE44300527E02 /* Assets.xcassets in Resources */,
 			);
