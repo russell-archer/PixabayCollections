@@ -9,7 +9,7 @@
 import UIKit
 
 class CustomGoButton: UIButton {
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         config()
@@ -28,7 +28,12 @@ class CustomGoButton: UIButton {
     private func config() {
         layer.cornerRadius = 10
         setTitleColor(.black, for: .normal)  // We want our button to have white text independent of light/dark mode
-        titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)  // Use text styles to support dynamic type
         translatesAutoresizingMaskIntoConstraints = false  // Turn constraints OFF as we'll be using auto layout
+        
+        // Support for dynamic type
+        titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
+        titleLabel?.minimumScaleFactor = 0.5
+        titleLabel?.adjustsFontSizeToFitWidth = true
+        titleLabel?.adjustsFontForContentSizeCategory = true
     }
 }

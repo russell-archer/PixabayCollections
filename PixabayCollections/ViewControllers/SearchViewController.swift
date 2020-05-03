@@ -43,6 +43,7 @@ extension SearchViewController {
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "Search"
+        
         configViews()
     }
     
@@ -56,7 +57,7 @@ extension SearchViewController {
 
         searchTextField.delegate = self
         searchTextField.translatesAutoresizingMaskIntoConstraints = false
-
+        
         NSLayoutConstraint.activate([
             searchTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: UIConstants.padding),
             searchTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: UIConstants.padding),
@@ -70,7 +71,7 @@ extension SearchViewController {
         
         goButton.translatesAutoresizingMaskIntoConstraints = false
         goButton.addTarget(self, action: #selector(goButtonTapped), for: .touchUpInside)
-        
+
         NSLayoutConstraint.activate([
             goButton.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 25),
             goButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -80,10 +81,13 @@ extension SearchViewController {
     }
 }
 
+// MARK:- UITextFieldDelegate
+
 extension SearchViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // This method's called when the Return key is tapped
+        // This method's called when the return key is tapped
         showResults()
         return true
     }
 }
+

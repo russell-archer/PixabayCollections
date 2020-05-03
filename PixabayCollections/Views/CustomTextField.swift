@@ -9,7 +9,7 @@
 import UIKit
 
 class CustomTextField: UITextField {
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         config()
@@ -33,14 +33,17 @@ class CustomTextField: UITextField {
         textColor = .label
         tintColor = .label
         textAlignment = .center
-        font = UIFont.preferredFont(forTextStyle: .title2)
-        adjustsFontSizeToFitWidth = true
         minimumFontSize = 12
-        
+
         backgroundColor = .tertiarySystemBackground
         autocorrectionType = .no
         returnKeyType = .go
         clearButtonMode = .whileEditing
         placeholder = "Search text"
+        
+        // Support for dynamic type
+        font = UIFont.preferredFont(forTextStyle: .title2)
+        adjustsFontForContentSizeCategory = true
+        adjustsFontSizeToFitWidth = true
     }
 }
