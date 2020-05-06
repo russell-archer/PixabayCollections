@@ -15,36 +15,19 @@ class SearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        config()
+        
+        configViewController()
+        configViews()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
-    @objc private func goButtonTapped() {
-        showResults()
-    }
-    
-    private func showResults() {
-        guard let searchText = searchTextField.text, searchText.count > 2 else { return }
-        
-        let resultsVc = ResultsViewController()
-        resultsVc.searchText = searchText
-        navigationController?.pushViewController(resultsVc, animated: true)
-    }
-}
-
-// MARK:- Configuration of the view controller and contained views
-
-extension SearchViewController {
-    
-    private func config() {
+    private func configViewController() {
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "Search"
-        
-        configViews()
     }
     
     private func configViews() {
@@ -79,6 +62,18 @@ extension SearchViewController {
             goButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
+    
+    @objc private func goButtonTapped() {
+        showResults()
+    }
+    
+    private func showResults() {
+        guard let searchText = searchTextField.text, searchText.count > 2 else { return }
+        
+        let resultsVc = ResultsViewController()
+        resultsVc.searchText = searchText
+        navigationController?.pushViewController(resultsVc, animated: true)
+    }
 }
 
 // MARK:- UITextFieldDelegate
@@ -90,4 +85,3 @@ extension SearchViewController: UITextFieldDelegate {
         return true
     }
 }
-
