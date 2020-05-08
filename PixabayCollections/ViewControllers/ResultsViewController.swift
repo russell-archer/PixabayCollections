@@ -16,6 +16,7 @@ class ResultsViewController: UIViewController {
     var imageData: [PixabayImage] = []
     var imageDataFiltered: [PixabayImage] = []
     var imageDataIsFiltered = false
+    var availableTags: [String] = []
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<CollectionViewSection, PixabayImage>!
     let searchController = UISearchController()
@@ -24,10 +25,11 @@ class ResultsViewController: UIViewController {
         super.viewDidLoad()
         
         configViewController()
+        configNavBar()
         configCollectionView()
-        configSearchBar()
-        getResults()
         configureDataSource()
+        configSearchBar()
+        getSearchResults()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -38,6 +40,11 @@ class ResultsViewController: UIViewController {
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
         title = searchText ?? "Results"
+    }
+    
+    private func configNavBar() {
+        let showTagsButton = UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(showTagsTapped))
+        navigationItem.rightBarButtonItem = showTagsButton
     }
     
     func configCollectionView() {
@@ -51,17 +58,25 @@ class ResultsViewController: UIViewController {
     func configureDataSource() {
         dataSource = UICollectionViewDiffableDataSource<CollectionViewSection, PixabayImage>(collectionView: collectionView) {
             collectionView, indexPath, data -> UICollectionViewCell? in
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PixabayImageCell.reuseId, for: indexPath) as! PixabayImageCell
-                cell.previewImageUrl = data.previewURL
-                return cell
+            
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PixabayImageCell.reuseId, for: indexPath) as! PixabayImageCell
+            cell.previewImageUrl = data.previewURL
+            return cell
         }
     }
     
     func updateData() {
         var snapshot = NSDiffableDataSourceSnapshot<CollectionViewSection, PixabayImage>()
         snapshot.appendSections([.main])
-        snapshot.appendItems(imageData)
+        snapshot.appendItems(imageDataIsFiltered ? imageDataFiltered : imageData)
         DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true) }
+    }
+    
+    @objc func showTagsTapped() {
+        let tagsViewController = TagsViewController()
+        tagsViewController.delegate = self
+        tagsViewController.allTags = availableTags
+        present(tagsViewController, animated: true)
     }
     
     private func configSearchBar() {
@@ -76,7 +91,7 @@ class ResultsViewController: UIViewController {
         definesPresentationContext = true
     }
     
-    private func getResults() {
+    private func getSearchResults() {
         guard searchText != nil, searchText!.count > 2 else { return }
         
         NetworkHelper.shared.loadImages(searchFor: searchText!) { [weak self] result in
@@ -88,9 +103,22 @@ class ResultsViewController: UIViewController {
                 return
                 
             case .success(let data):
+                self.imageDataIsFiltered = false
                 self.imageData = data!
+                self.getAvailableTags()
                 DispatchQueue.main.async { self.updateData() }
                 return
+            }
+        }
+    }
+    
+    private func getAvailableTags() {
+        availableTags.removeAll()
+        let arrayOfTagArrays = imageData.map { $0.tags.split(separator: ",") }  // Array of string arrays of comma-delimited tags associated with each image
+        arrayOfTagArrays.forEach {
+            $0.forEach { tagArray in
+                let tag = String(tagArray.trimmingCharacters(in: .whitespaces))
+                if !availableTags.contains(tag) { availableTags.append(tag) }
             }
         }
     }
@@ -99,7 +127,24 @@ class ResultsViewController: UIViewController {
 // MARK:- UICollectionViewDelegate
 
 extension ResultsViewController: UICollectionViewDelegate {
-
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedItem = imageDataIsFiltered ? imageDataFiltered[indexPath.row] : imageData[indexPath.row]
+        print("Item selected tags: \(selectedItem.tags)")
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        // Detect when at bottom of list
+//        let offsetY = scrollView.contentOffset.y
+//        let contentHeight = scrollView.contentSize.height
+//        let height = scrollView.frame.size.height
+//
+//        if offsetY > contentHeight - height {
+//            guard hasMoreFollowers, !isLoadingMoreFollowers else { return }
+//            page += 1
+//            getFollowers(username: username, page: page)
+//        }
+    }
 }
 
 // MARK:- UISearchResultsUpdating delegate
@@ -107,6 +152,27 @@ extension ResultsViewController: UICollectionViewDelegate {
 extension ResultsViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
-//        guard let filterText = searchController.searchBar.text else { return }
+        guard let filterText = searchController.searchBar.text, !filterText.isEmpty else {
+            imageDataFiltered.removeAll()
+            imageDataIsFiltered = false
+            updateData()
+            return
+        }
+        
+        imageDataIsFiltered = true
+        imageDataFiltered = imageData.filter { pixabayImage in
+            pixabayImage.tags.lowercased().contains(filterText.lowercased())
+        }
+        
+        updateData()
+    }
+}
+
+// MARK:- TagSelectionDelegate
+extension ResultsViewController: TagSelectionDelegate {
+    
+    func tagSelected(was tag: String) {
+        searchController.searchBar.text = tag
+        updateSearchResults(for: searchController)
     }
 }
