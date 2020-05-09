@@ -6,7 +6,7 @@
 //  Copyright © 2020 Russell Archer. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 public enum NetworkHelperError: Error {
     case noError
@@ -40,8 +40,6 @@ public struct NetworkHelper {
     private init() {}  // Singelton access via
     
     public func loadImages(searchFor: String, completion: @escaping (Result<[PixabayImage]?, NetworkHelperError>) -> Void) {
-        print("Loading data from Pixabay...")
-        
         guard searchFor.count > 2 else {
             completion(.failure(.searchTermTooShort))
             return
@@ -73,7 +71,7 @@ public struct NetworkHelper {
             URLQueryItem(name: "image_type", value: imageType),
             URLQueryItem(name: "q", value: searchFor)
         ]
-
+        
         guard let url = urlComponents.url else {
             completion(.failure(.badUrl))
             return
@@ -87,8 +85,6 @@ public struct NetworkHelper {
             }
             
             let httpResponse = response as! HTTPURLResponse
-            print("HTTP response status code: \(httpResponse.statusCode)")  // 200 == OK
-            
             guard httpResponse.statusCode == 200 else {
                 completion(.failure(.badResponse))
                 return
@@ -104,6 +100,32 @@ public struct NetworkHelper {
             }
             
             DispatchQueue.main.async { completion(.success(pixabayData!.hits)) }
+        }
+        
+        task.resume()
+    }
+    
+    public func loadImage(from imageUrl: String, completion: @escaping (UIImage?) -> Void) {
+        guard let url = URL(string: imageUrl) else {
+            completion(nil)
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            
+            guard let data = data else {
+                completion(nil)
+                return
+            }
+            
+            let httpResponse = response as! HTTPURLResponse
+            guard httpResponse.statusCode == 200 else {
+                completion(nil)
+                return
+            }
+            
+            let image = UIImage(data: data)
+            DispatchQueue.main.async { completion(image) }
         }
         
         task.resume()

@@ -51,8 +51,6 @@ class SearchViewController: UIViewController {
     
     private func configGoButton() {
         view.addSubview(goButton)
-        
-        goButton.translatesAutoresizingMaskIntoConstraints = false
         goButton.addTarget(self, action: #selector(goButtonTapped), for: .touchUpInside)
 
         NSLayoutConstraint.activate([
