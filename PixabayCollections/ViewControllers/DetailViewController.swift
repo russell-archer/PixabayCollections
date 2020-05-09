@@ -60,6 +60,5 @@ extension DetailViewController: CustomImageViewDelegate {
     
     func imageLoadComplete(success: Bool) {
         self.spinner.stopAnimating()
-//        self.spinner.isHidden = true
     }
 }
