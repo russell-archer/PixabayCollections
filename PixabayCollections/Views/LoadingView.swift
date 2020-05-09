@@ -20,11 +20,12 @@ class LoadingView: UIView {
     
     convenience init(superView: UIView) {
         self.init(frame: superView.bounds)
+        textLabel.text = "Loading..."
     }
     
     convenience init(superView: UIView, text: String) {
         self.init(frame: superView.bounds)
-        textLabel.text = "Looking for \(text)..."
+        textLabel.text = "Getting \(text)..."
     }
     
     required init?(coder: NSCoder) {

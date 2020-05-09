@@ -127,12 +127,7 @@ class ResultsViewController: UIViewController {
                 self.imageDataIsFiltered = false
                 self.imageData = data!
                 self.getAvailableTags()
-                
-                DispatchQueue.main.async {
-                    self.updateData()
-//                    self.loadingView.hide(animated: true)
-                }
-                
+                DispatchQueue.main.async { self.updateData() }
                 return
             }
         }
