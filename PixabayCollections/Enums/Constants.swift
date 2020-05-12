@@ -8,7 +8,7 @@
 
 import UIKit
 
-public enum UIConstants {
-    static let padding: CGFloat = 10
+enum UIConstants {
+    static let padding: CGFloat     = 10
     static let cellPadding: CGFloat = 8
 }

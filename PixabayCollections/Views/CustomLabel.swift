@@ -10,7 +10,7 @@ import UIKit
 
 class CustomLabel: UILabel {
 
-    public var textStyle: UIFont.TextStyle!
+    var textStyle: UIFont.TextStyle!
     
     override init(frame: CGRect) {
         super.init(frame: frame)

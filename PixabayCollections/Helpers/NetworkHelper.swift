@@ -8,55 +8,32 @@
 
 import UIKit
 
-public enum NetworkHelperError: Error {
-    case noError
-    case searchTermTooShort
-    case endPointPropertiesMissing
-    case internalError
-    case badUrl
-    case badResponse
-    case noData
-    case notDecodable
+struct NetworkHelper {
     
-    func description() -> String {
-        switch self {
-            case .noError:                      return "No Error"
-            case .searchTermTooShort:           return "Search Term too short"
-            case .endPointPropertiesMissing:    return "End Point Properties Missing"
-            case .internalError:                return "Internal Error"
-            case .badUrl:                       return "Bad URL"
-            case .badResponse:                  return "Bad Response"
-            case .noData:                       return "No Data"
-            case .notDecodable:                 return "Not Decodable (JSON couldn't be parsed)"
-        }
-    }
-}
-
-public struct NetworkHelper {
+    static let shared = NetworkHelper()
+    private let plistHelper = PropertyFileHelper(file: "Pixabay")
+    private let cache = NSCache<NSString, UIImage>()
     
-    public static let shared = NetworkHelper()
-    private let _plistHelper = PropertyFileHelper(file: "Pixabay")
+    private init() {}  // Singelton access via 'shared' property
     
-    private init() {}  // Singelton access via
-    
-    public func loadImages(searchFor: String, completion: @escaping (Result<[PixabayImage]?, NetworkHelperError>) -> Void) {
+    func loadImages(searchFor: String, page: Int = 1, completion: @escaping (Result<PixabayData?, NetworkHelperError>) -> Void) {
         guard searchFor.count > 2 else {
             completion(.failure(.searchTermTooShort))
             return
         }
         
         // Example query: https://pixabay.com/api/?key=your-api-key&image_type=photo&q=coffee
-        guard _plistHelper.hasLoadedProperties else {
+        guard plistHelper.hasLoadedProperties else {
             completion(.failure(.endPointPropertiesMissing))
             return
         }
         
         guard
-            let scheme      = _plistHelper.readProperty(key: "scheme"),
-            let host        = _plistHelper.readProperty(key: "host"),
-            let path        = _plistHelper.readProperty(key: "path"),
-            let key         = _plistHelper.readProperty(key: "key"),
-            let imageType   = _plistHelper.readProperty(key: "image_type") else {
+            let scheme      = plistHelper.readProperty(key: "scheme"),
+            let host        = plistHelper.readProperty(key: "host"),
+            let path        = plistHelper.readProperty(key: "path"),
+            let key         = plistHelper.readProperty(key: "key"),
+            let imageType   = plistHelper.readProperty(key: "image_type") else {
                 
                 completion(.failure(.endPointPropertiesMissing))
                 return
@@ -69,6 +46,7 @@ public struct NetworkHelper {
         urlComponents.queryItems = [
             URLQueryItem(name: "key", value: key),
             URLQueryItem(name: "image_type", value: imageType),
+            URLQueryItem(name: "page", value: String(page)),
             URLQueryItem(name: "q", value: searchFor)
         ]
         
@@ -99,13 +77,15 @@ public struct NetworkHelper {
                 return
             }
             
-            DispatchQueue.main.async { completion(.success(pixabayData!.hits)) }
+            DispatchQueue.main.async { completion(.success(pixabayData!)) }
         }
         
         task.resume()
     }
     
-    public func loadImage(from imageUrl: String, completion: @escaping (UIImage?) -> Void) {
+    func loadImage(from imageUrl: String, completion: @escaping (UIImage?) -> Void) {
+        if let image = loadImageFromCache(key: imageUrl) { completion(image) }
+        
         guard let url = URL(string: imageUrl) else {
             completion(nil)
             return
@@ -125,9 +105,13 @@ public struct NetworkHelper {
             }
             
             let image = UIImage(data: data)
+            if image != nil { self.cache.setObject(image!, forKey: NSString(string: imageUrl)) }
+            
             DispatchQueue.main.async { completion(image) }
         }
         
         task.resume()
     }
+    
+    private func loadImageFromCache(key: String) -> UIImage? { cache.object(forKey: NSString(string: key)) }
 }

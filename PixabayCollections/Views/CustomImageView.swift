@@ -14,8 +14,8 @@ protocol CustomImageViewDelegate: class {
 
 class CustomImageView: UIImageView {
     
-    public weak var delegate: CustomImageViewDelegate?
-    public var imageUrl: String? {
+    weak var delegate: CustomImageViewDelegate?
+    var imageUrl: String? {
         didSet {
             guard let iu = imageUrl else { return }
             NetworkHelper.shared.loadImage(from: iu) { [weak self] img in

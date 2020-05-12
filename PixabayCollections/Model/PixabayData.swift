@@ -8,33 +8,33 @@
 
 import Foundation
 
-public struct PixabayData: Codable {
-    var totalHits: Int
-    var hits: [PixabayImage]
-    var total: Int
+struct PixabayData: Codable {
+    let totalHits: Int
+    let hits: [PixabayImage]
+    let total: Int
 }
 
-public struct PixabayImage: Codable, Hashable {
-    var largeImageURL: String
-    var webformatHeight: Int
-    var webformatWidth: Int
-    var likes: Int
-    var imageWidth: Int
-    var id: Int
-    var userId: Int
-    var views: Int
-    var comments: Int
-    var pageURL: String
-    var imageHeight: Int
-    var webformatURL: String
-    var type: String
-    var previewHeight: Int
-    var tags: String
-    var downloads: Int
-    var user: String
-    var favorites: Int
-    var imageSize: Int
-    var previewWidth: Int
-    var userImageURL: String
-    var previewURL: String
+struct PixabayImage: Codable, Hashable {
+    let largeImageURL: String
+    let webformatHeight: Int
+    let webformatWidth: Int
+    let likes: Int
+    let imageWidth: Int
+    let id: Int
+    let userId: Int
+    let views: Int
+    let comments: Int
+    let pageURL: String
+    let imageHeight: Int
+    let webformatURL: String
+    let type: String
+    let previewHeight: Int
+    let tags: String
+    let downloads: Int
+    let user: String
+    let favorites: Int
+    let imageSize: Int
+    let previewWidth: Int
+    let userImageURL: String
+    let previewURL: String
 }

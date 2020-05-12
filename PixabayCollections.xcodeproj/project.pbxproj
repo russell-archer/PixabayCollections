@@ -33,6 +33,7 @@
 		68C9ED3A24659EDB00ACC889 /* TagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C9ED3924659EDB00ACC889 /* TagsViewController.swift */; };
 		68C9ED3D24659F8500ACC889 /* TagLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C9ED3C24659F8500ACC889 /* TagLabel.swift */; };
 		68C9ED3F2465A35F00ACC889 /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C9ED3E2465A35F00ACC889 /* TagCell.swift */; };
+		68D74401246AF9EE001A7B99 /* NetworkHelperError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D74400246AF9EE001A7B99 /* NetworkHelperError.swift */; };
 		68D89250245DE0B500952831 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D8924F245DE0B500952831 /* CustomTextField.swift */; };
 		68E2E847245E28CE00840919 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 68E2E846245E28CE00840919 /* README.md */; };
 		68E2E84A245E29D500840919 /* img1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 68E2E849245E29D500840919 /* img1.jpg */; };
@@ -69,6 +70,7 @@
 		68C9ED3924659EDB00ACC889 /* TagsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsViewController.swift; sourceTree = "<group>"; };
 		68C9ED3C24659F8500ACC889 /* TagLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagLabel.swift; sourceTree = "<group>"; };
 		68C9ED3E2465A35F00ACC889 /* TagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
+		68D74400246AF9EE001A7B99 /* NetworkHelperError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelperError.swift; sourceTree = "<group>"; };
 		68D8924F245DE0B500952831 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		68E2E846245E28CE00840919 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		68E2E849245E29D500840919 /* img1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = img1.jpg; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 			children = (
 				68895C60245DEF0300059A04 /* Constants.swift */,
 				688FB9822469DDB200594365 /* MetaDataKeys.swift */,
+				68D74400246AF9EE001A7B99 /* NetworkHelperError.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -297,6 +300,7 @@
 				688FB97F2469D3F900594365 /* MetaDataCell.swift in Sources */,
 				68927AE7245F38DE0017435F /* NetworkHelper.swift in Sources */,
 				688FB9812469D49D00594365 /* CustomLabel.swift in Sources */,
+				68D74401246AF9EE001A7B99 /* NetworkHelperError.swift in Sources */,
 				68F5DBEA245F93C9005C0E78 /* PixabayImageCell.swift in Sources */,
 				68895C5E245DEA4E00059A04 /* CustomGoButton.swift in Sources */,
 				684626CD245CF11D00527E02 /* DetailViewController.swift in Sources */,

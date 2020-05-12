@@ -8,9 +8,9 @@
 
 import UIKit
 
-public struct CollectionViewHelper {
+struct CollectionViewHelper {
     
-    public static func createThreeColumnFlowLayout(in view: UIView) -> UICollectionViewFlowLayout {
+    static func createThreeColumnFlowLayout(in view: UIView) -> UICollectionViewFlowLayout {
         let width                       = view.bounds.width
         let padding: CGFloat            = 10
         let minimumItemSpacing: CGFloat = 10
@@ -24,7 +24,7 @@ public struct CollectionViewHelper {
         return flowLayout
     }
     
-    public static func createTagFlowLayout(in view: UIView) -> UICollectionViewFlowLayout {
+    static func createTagFlowLayout(in view: UIView) -> UICollectionViewFlowLayout {
         let width                       = view.bounds.width
         let padding: CGFloat            = 10
         let minimumItemSpacing: CGFloat = 10

@@ -10,7 +10,7 @@ import UIKit
 
 class DetailViewController: UIViewController {
 
-    public var pixabayImage: PixabayImage? {
+    var pixabayImage: PixabayImage? {
         didSet {
             guard pixabayImage != nil else { return }
             spinner.startAnimating()

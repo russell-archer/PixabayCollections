@@ -12,16 +12,19 @@ enum CollectionViewSection { case main }
 
 class ResultsViewController: UIViewController {
 
-    public var searchText: String?
+    var searchText: String?
     
     private var imageData: [PixabayImage] = []
     private var imageDataFiltered: [PixabayImage] = []
     private var imageDataIsFiltered = false
     private var loading = false
+    private var page = 1
+    private var totalImagesAvailable = 0
     private var availableTags: [String] = []
     private var collectionView: UICollectionView!
     private var dataSource: UICollectionViewDiffableDataSource<CollectionViewSection, PixabayImage>!
     private var loadingView: LoadingView!
+    private var moreImagesAvailableForDownload: Bool { imageData.count < totalImagesAvailable }
     private let searchController = UISearchController()
 
     override func viewDidLoad() {
@@ -110,22 +113,30 @@ class ResultsViewController: UIViewController {
     }
     
     private func getSearchResults() {
-        guard searchText != nil, searchText!.count > 2 else { return }
+        guard !loading, searchText != nil, searchText!.count > 2 else { return }
 
-        loadingView.show(animated: true)
+        if page == 1 { loadingView.show(animated: true) }
         loading = true
-        NetworkHelper.shared.loadImages(searchFor: searchText!) { [weak self] result in
+        
+        NetworkHelper.shared.loadImages(searchFor: searchText!, page: page) { [weak self] result in
             guard let self = self else { return }
+            self.loading = false
 
             switch result {
             case .failure(let error):
-                DispatchQueue.main.async { self.loadingView.hide(animated: true) }
+                if self.page == 1 { DispatchQueue.main.async { self.loadingView.hide(animated: true) }}
                 print(error.description())
                 return
 
             case .success(let data):
                 self.imageDataIsFiltered = false
-                self.imageData = data!
+                if self.page == 1 {
+                    self.imageData = data!.hits
+                    self.totalImagesAvailable = data!.totalHits
+                } else {
+                    self.imageData.append(contentsOf: data!.hits)
+                }
+                
                 self.getAvailableTags()
                 DispatchQueue.main.async { self.updateData() }
                 return
@@ -158,15 +169,15 @@ extension ResultsViewController: UICollectionViewDelegate {
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         // Detect when at bottom of list
-//        let offsetY = scrollView.contentOffset.y
-//        let contentHeight = scrollView.contentSize.height
-//        let height = scrollView.frame.size.height
-//
-//        if offsetY > contentHeight - height {
-//            guard hasMoreFollowers, !isLoadingMoreFollowers else { return }
-//            page += 1
-//            getFollowers(username: username, page: page)
-//        }
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let height = scrollView.frame.size.height
+
+        if offsetY > contentHeight - height {
+            guard !loading, !imageDataIsFiltered, moreImagesAvailableForDownload else { return }
+            page += 1
+            getSearchResults()
+        }
     }
 }
 

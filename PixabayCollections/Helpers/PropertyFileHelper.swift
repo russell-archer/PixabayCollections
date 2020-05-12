@@ -21,25 +21,25 @@
 
 import UIKit
 
-public struct PropertyFileHelper {
+struct PropertyFileHelper {
     
-    public var hasLoadedProperties: Bool { return _propertyFile != nil ? true : false }
-    private var _propertyFile: [String : AnyObject]?
+    var hasLoadedProperties: Bool { return propertyFile != nil ? true : false }
+    private var propertyFile: [String : AnyObject]?
 
     init(file: String) {
-        _propertyFile = readPropertyFile(filename: file)
+        propertyFile = readPropertyFile(filename: file)
     }
    
     /// Read a property from a dictionary of values that was read from a plist
-    public func readProperty(key: String) -> String? {
-        guard _propertyFile != nil else { return nil }
-        guard let value = _propertyFile![key] as? String else { return nil }
+    func readProperty(key: String) -> String? {
+        guard propertyFile != nil else { return nil }
+        guard let value = propertyFile![key] as? String else { return nil }
        
         return value
     }
    
     /// Read a plist property file and return a dictionary of values
-    public func readPropertyFile(filename: String) -> [String : AnyObject]? {
+    func readPropertyFile(filename: String) -> [String : AnyObject]? {
         guard let path = Bundle.main.path(forResource: filename, ofType: "plist") else { return nil }
         guard let contents = NSDictionary(contentsOfFile: path) as? [String : AnyObject] else { return nil }
         

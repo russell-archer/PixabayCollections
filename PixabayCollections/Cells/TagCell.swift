@@ -10,8 +10,8 @@ import UIKit
 
 class TagCell: UICollectionViewCell {
     
-    public static let reuseId = "TagCell"
-    public var text = "" { didSet { tagLabel.text = text }}
+    static let reuseId = "TagCell"
+    var text = "" { didSet { tagLabel.text = text } }
     private var tagLabel = TagLabel()
     
     override init(frame: CGRect) {

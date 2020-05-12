@@ -14,8 +14,8 @@ protocol TagSelectionDelegate: class {
 
 class TagsViewController: UIViewController {
 
-    public var allTags: [String] = []
-    public weak var delegate: TagSelectionDelegate?
+    var allTags: [String] = []
+    weak var delegate: TagSelectionDelegate?
     private var collectionView: UICollectionView!
     
     override func viewDidLoad() {

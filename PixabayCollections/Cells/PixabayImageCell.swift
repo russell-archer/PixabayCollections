@@ -8,19 +8,16 @@
 
 import UIKit
 
-public class PixabayImageCell: UICollectionViewCell {
+class PixabayImageCell: UICollectionViewCell {
     
-    public static let reuseId = "PixabayImageCell"
-    public var previewImageUrl: String = "" {
+    static let reuseId = "PixabayImageCell"
+    var previewImageUrl: String = "" {
         didSet {
-            guard !previewImageUrl.isEmpty else { return }
-            let url = URL(string: previewImageUrl)
-            guard let imageData = try? Data(contentsOf: url!) else {
-                imageView.image = UIImage(named: "owl")  // Placeholder for missing preview image
-                return
+            guard !previewImageUrl.isEmpty else { return }           
+            NetworkHelper.shared.loadImage(from: previewImageUrl) { image in
+                guard let image = image else { return }
+                self.imageView.image = image
             }
-            
-            imageView.image = UIImage(data: imageData)
         }
     }
     
@@ -37,11 +34,12 @@ public class PixabayImageCell: UICollectionViewCell {
     
     private func config() {
         contentView.addSubview(imageView)
-        imageView.layer.cornerRadius = 10
-        imageView.clipsToBounds = true  // Ensures the image is rounded
-        imageView.contentMode = .scaleAspectFill
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.cornerRadius    = 10
+        imageView.clipsToBounds         = true  // Ensures the image is rounded
+        imageView.contentMode           = .scaleAspectFill
+                
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: UIConstants.cellPadding),
             imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: UIConstants.cellPadding),

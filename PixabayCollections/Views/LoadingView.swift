@@ -32,7 +32,7 @@ class LoadingView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func show(animated: Bool) {
+    func show(animated: Bool) {
         if !animated {
             alpha = 1
             return
@@ -41,7 +41,7 @@ class LoadingView: UIView {
         UIView.animate(withDuration: 0.25) { self.alpha = 1 }
     }
     
-    public func hide(animated: Bool) {
+    func hide(animated: Bool) {
         if !animated {
             alpha = 0
             return
