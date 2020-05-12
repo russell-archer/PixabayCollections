@@ -20,7 +20,7 @@ This demo app uses the Pixabay image API to return metadata related to a search 
 * Results will be paged (25 items per page)
 * Results will be displayed in UICollectionView with a UICollectionViewDiffableDataSource
 
-<video src="./readme-assets/pixabay.mov" controls preload></video>
+![](./readme-assets/pixabay-collections.gif)
 ___
 
 ## The Search View Controller
