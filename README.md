@@ -34,15 +34,19 @@ Before we can begin with creating the UI programmatically we need to remove the 
 initial view controller.
 
 First, delete **Main.storyboard** and move it to the trash:
+
 ![](./readme-assets/setup1.jpg)
 
 Delete the name of the storyboard in **Targets > General > Main Interface**:
+
 ![](./readme-assets/setup2.jpg)
 
 So it looks like this:
+
 ![](./readme-assets/setup3.jpg)
 
 Open **Info.plist**, search for **Main** and then remove the **Storyboard Name** entry entirely:
+
 ![](./readme-assets/setup4.jpg)
 
 Finally, open **SceneDelegate.swift** and modify the `scene(_:willConnectTo:options:)` method as follows:
@@ -77,6 +81,7 @@ ___
 ## The Search View Controller
 
 The search view controller is very simple: a **UITextField** and **UIButton**:
+
 ![](./readme-assets/img2.jpg)
 
 When the button's tapped an instance of the **ResultsViewController** is created and pushed onto the navigation controller's stack.
