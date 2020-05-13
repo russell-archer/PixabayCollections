@@ -16,9 +16,9 @@ This demo app uses the Pixabay image API to return images and metadata related t
 ![](./readme-assets/img1.jpg)
 
 * The UI is created **100% programmatically** (there is no storyboard)
-* The three main screens will be navigated using a **UINavigationController**
-* Results will be displayed in **UICollectionView** with a **UICollectionViewDiffableDataSource**
-* Images will be cached in an **NSCache**
+* The three main screens will be navigated using a `UINavigationController`
+* Results will be displayed in `UICollectionView` with a `UICollectionViewDiffableDataSource`
+* Images will be cached in an `NSCache`
 * Results will be **paged** (20 items per page). When the user scrolls to the bottom of the collection view additional results will be requested
 
 <p align="center">
@@ -78,15 +78,15 @@ func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options conn
 ```
 ___
 
-## The Search View Controller
+## Search View Controller
 
-The search view controller is very simple: a **UITextField** and **UIButton**:
+The search view controller is very simple: a `UITextField` and `UIButton`:
 
 ![](./readme-assets/img2.jpg)
 
-When the button's tapped an instance of the **ResultsViewController** is created and pushed onto the navigation controller's stack.
+When the button's tapped an instance of the `ResultsViewController` is created and pushed onto the navigation controller's stack.
 
-To keep configuration code out of the ResultsViewController we create **CustomTextField** and **CustomGoButton**:
+To keep configuration code out of the ResultsViewController we create `CustomTextField` and `CustomGoButton`:
 
 ``` swift
 //
@@ -182,7 +182,7 @@ class CustomGoButton: UIButton {
 }
 ```
 
-Here's code **SearchViewController**. Notice how we programmatically create constraints using `NSLayoutConstraint.activate`:
+Here's code `SearchViewController`. Notice how we programmatically create constraints using `NSLayoutConstraint.activate`:
 
 ``` swift
 //
@@ -273,6 +273,183 @@ extension SearchViewController: UITextFieldDelegate {
 ```
 ___
 
+## Pixabay API and our Data Model
+
+Before reviewing the results view controller let's look at the Pixabay API and the data model we'll use.
+
+The free Pixabay REST API allows us to seach for images. The response is a JSON encoded list of image URLs and metadata.
+
+First, you need to register for an account at https://pixabay.com/en/accounts/register/
+
+![](./readme-assets/pixabay1.jpg)
+
+Once you login to your account on Pixabay you’ll be able to see your API key in https://pixabay.com/api/docs/:
+
+![](./readme-assets/pixabay2.jpg)
+
+Queries are very simple. The main parameters are:
+
+* **key**: Your API key
+* **q**: What you’re searching for (URL encoded)
+* **image_type**: The type of image you want ("all", "photo", "illustration", “vector")
+
+For example, we can look for *coffee* photos (the **q** parameter must be URL encoded) with:
+
+`https://pixabay.com/api/?key=your-api-key&q=coffee&image_type=photo`
+
+Note that there are also **page** and **per_page** parameters which we can use to implement lazily-loaded paginated data.
+
+We can test example queries in an HTTP client such as **Paw** (https://paw.cloud/):
+
+![](./readme-assets/pixabay3.jpg)
+
+Useful values returned in the response include:
+
+* **totalHits**: The number of images accessible through the API. By default, the API is limited to return a maximum of 500 images per query
+* **hits**: A collection of image metadata, including URLs for a preview image, large image, etc.
+
+The `ResultsViewController` will use a `NetworkHelper` to make calls to the Pixabay API. 
+JSON data returned from Pixabay will be decoded as a `PixabayData` struct:
+
+![](./readme-assets/pixabay4.jpg)
+
+The `PixabayData` struct:
+* Implements the `Codable` protocol
+* Is used as the model to map incoming raw JSON data from the Pixabay API
+* The hits member of the struct will hold an array of image metadata (`PixabayImage`)
+
+``` swift
+struct PixabayData: Codable {
+    let totalHits: Int
+    let hits: [PixabayImage]
+    let total: Int
+}
+```
+
+The `PixabayImage` struct:
+* Implements the `Codable` and `Hashable` protocols
+* Models all the data for an individual Pixabay image
+
+``` swift
+struct PixabayImage: Codable, Hashable {
+    let largeImageURL: String
+    let tags: String
+    let previewURL: String
+    :
+    :
+}
+```
+
+The `NetworkHelper`:
+* Is a struct that implements to the `Singleton` pattern
+* Provides a `loadImages(searchFor:page:completion:)` method to get a page of data from the Pixabay API (this doesn’t include actual image data, just URLs)
+* Makes HTTP GET requests using a `URLSession dataTask`
+* Decodes the incoming JSON data using `JSONDecoder`
+* When data has been loaded calls the completion closure passed to `loadImage(searchFor:completion:)` with a `PixabayData` struct
+* Also provides a `loadImage(from:completion:)` method to load image data given a Pixabay image URL
+
+## iOS Security
+The default security configuration for iOS will not allow requests to random URLs. 
+You need to explicitly configure access to Pixabay by adding the following to your Info.plist:
+
+``` xml 
+<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSExceptionDomains</key>
+    <dict>
+        <key>pixabay.com</key>
+        <dict>
+            <key>NSExceptionAllowsInsecureHTTPLoads</key>
+            <true/>
+        </dict>
+    </dict>
+</dict>
+```
+
+![](./readme-assets/ios-security.jpg)
+
+Note that to avoid having hard-coded Pixabay constants (URL, etc.) we store them in a property list file named **Pixabay.plist**:
+
+``` xml 
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+     <key>scheme</key>
+     <string>https</string>
+     <key>host</key>
+     <string>pixabay.com</string>
+     <key>path</key>
+     <string>/api</string>
+     <key>key</key>
+     <string>your-key-goes-here</string>
+     <key>image_type</key>
+     <string>photo</string>
+</dict>
+</plist>
+```
+
+A `PropertyFileHelper` allows the `NetworkHelper` to access Pixabay.plist:
+
+``` swift
+//
+//  PropertyFileHelper.swift
+//  PixabayCollections
+//
+//  Created by Russell Archer on 03/05/2020.
+//  Copyright © 2020 Russell Archer. All rights reserved.
+//
+
+/*
+ 
+ PropertyFileHelper reads the contents of a .plist file and allows you to read individual
+ properties by their keys.
+ 
+ Example usage:
+ 
+ let plistHelper = PropertyFileHelper(file: "MyPlistFile")  // Note: No .plist file extn
+ guard plistHelper.hasLoadedProperties else { return }
+ guard var myValue = plistHelper.readProperty(key: "MyKey") else { return }
+ 
+ */
+
+import UIKit
+
+struct PropertyFileHelper {
+    
+    var hasLoadedProperties: Bool { return propertyFile != nil ? true : false }
+    private var propertyFile: [String : AnyObject]?
+
+    init(file: String) {
+        propertyFile = readPropertyFile(filename: file)
+    }
+   
+    /// Read a property from a dictionary of values that was read from a plist
+    func readProperty(key: String) -> String? {
+        guard propertyFile != nil else { return nil }
+        guard let value = propertyFile![key] as? String else { return nil }
+       
+        return value
+    }
+   
+    /// Read a plist property file and return a dictionary of values
+    func readPropertyFile(filename: String) -> [String : AnyObject]? {
+        guard let path = Bundle.main.path(forResource: filename, ofType: "plist") else { return nil }
+        guard let contents = NSDictionary(contentsOfFile: path) as? [String : AnyObject] else { return nil }
+        
+        return contents
+    }
+}
+```
+
+___
+
 ## Results View Controller
 
-todo
+The `ResultsViewController` is the most complex view controller in the project. It has to handle:
+
+* Getting JSON data from the Pixabay API (see below)
+* Getting preview images from Pixabay and displaying them in a collection view
+* Paging data. When the user has scrolled to the bottom of the collection view get another page of data and preview images
+* Getting all the tags associated with all the preview images displayed
+* Searching by tag to filter the collection of images
