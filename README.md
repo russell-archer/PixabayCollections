@@ -27,10 +27,56 @@ This demo app uses the Pixabay image API to return images and metadata related t
 
 ___
 
+## Creating an Xcode Project without a Storyboard
+
+The project was created in Xcode using the *Single View App* template. 
+Before we can begin with creating the UI programmatically we need to remove the storyboard and manually configure the app's window and 
+initial view controller.
+
+First, delete **Main.storyboard** and move it to the trash:
+![](./readme-assets/setup1.jpg)
+
+Delete the name of the storyboard in **Targets > General > Main Interface**:
+![](./readme-assets/setup2.jpg)
+
+So it looks like this:
+![](./readme-assets/setup3.jpg)
+
+Open **Info.plist**, search for **Main** and then remove the **Storyboard Name** entry entirely:
+![](./readme-assets/setup4.jpg)
+
+Finally, open **SceneDelegate.swift** and modify the `scene(_:willConnectTo:options:)` method as follows:
+
+``` swift
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+
+var window: UIWindow?
+
+func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+    // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
+    // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
+
+    guard let windowScene = (scene as? UIWindowScene) else { return }  // Get the window scene
+    window = UIWindow(frame: windowScene.coordinateSpace.bounds)  // Create a window
+    guard window != nil else { return }
+
+    // Assign the window scene to the window's window scene
+    window!.windowScene = windowScene
+
+    // Set the root view controller (to the nav controller)
+    window!.rootViewController = createNavController(with: createInitialViewControler())
+
+    // Make the window visible
+    window!.makeKeyAndVisible()
+}
+:
+:
+```
+___
+
 ## The Search View Controller
 
 The search view controller is very simple: a **UITextField** and **UIButton**:
-
 ![](./readme-assets/img2.jpg)
 
 When the button's tapped an instance of the **ResultsViewController** is created and pushed onto the navigation controller's stack.
@@ -118,7 +164,9 @@ class CustomGoButton: UIButton {
     private func config() {
         layer.cornerRadius = 10
         setTitleColor(.black, for: .normal)  
-        translatesAutoresizingMaskIntoConstraints = false  // Turn constraints OFF as we'll be using auto layout
+        
+        // Turn constraints OFF as we'll be using auto layout
+        translatesAutoresizingMaskIntoConstraints = false  
         
         // Support for dynamic type
         titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)

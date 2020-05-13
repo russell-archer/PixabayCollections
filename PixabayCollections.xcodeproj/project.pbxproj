@@ -36,6 +36,10 @@
 		68A1E11E246C20CC00FB5161 /* img7.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 68A1E118246C20CC00FB5161 /* img7.jpg */; };
 		68A1E11F246C20CC00FB5161 /* img4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 68A1E119246C20CC00FB5161 /* img4.jpg */; };
 		68A1E120246C20CC00FB5161 /* img6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 68A1E11A246C20CC00FB5161 /* img6.jpg */; };
+		68A1E125246C3AF700FB5161 /* setup3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 68A1E121246C3AF600FB5161 /* setup3.jpg */; };
+		68A1E126246C3AF700FB5161 /* setup1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 68A1E122246C3AF600FB5161 /* setup1.jpg */; };
+		68A1E127246C3AF700FB5161 /* setup4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 68A1E123246C3AF600FB5161 /* setup4.jpg */; };
+		68A1E128246C3AF700FB5161 /* setup2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 68A1E124246C3AF600FB5161 /* setup2.jpg */; };
 		68C9ED3A24659EDB00ACC889 /* TagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C9ED3924659EDB00ACC889 /* TagsViewController.swift */; };
 		68C9ED3D24659F8500ACC889 /* TagLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C9ED3C24659F8500ACC889 /* TagLabel.swift */; };
 		68C9ED3F2465A35F00ACC889 /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C9ED3E2465A35F00ACC889 /* TagCell.swift */; };
@@ -80,6 +84,10 @@
 		68A1E118246C20CC00FB5161 /* img7.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = img7.jpg; sourceTree = "<group>"; };
 		68A1E119246C20CC00FB5161 /* img4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = img4.jpg; sourceTree = "<group>"; };
 		68A1E11A246C20CC00FB5161 /* img6.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = img6.jpg; sourceTree = "<group>"; };
+		68A1E121246C3AF600FB5161 /* setup3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = setup3.jpg; sourceTree = "<group>"; };
+		68A1E122246C3AF600FB5161 /* setup1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = setup1.jpg; sourceTree = "<group>"; };
+		68A1E123246C3AF600FB5161 /* setup4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = setup4.jpg; sourceTree = "<group>"; };
+		68A1E124246C3AF600FB5161 /* setup2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = setup2.jpg; sourceTree = "<group>"; };
 		68C9ED3924659EDB00ACC889 /* TagsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsViewController.swift; sourceTree = "<group>"; };
 		68C9ED3C24659F8500ACC889 /* TagLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagLabel.swift; sourceTree = "<group>"; };
 		68C9ED3E2465A35F00ACC889 /* TagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
@@ -234,6 +242,10 @@
 				68A1E116246C20CC00FB5161 /* img5.jpg */,
 				68A1E11A246C20CC00FB5161 /* img6.jpg */,
 				68A1E118246C20CC00FB5161 /* img7.jpg */,
+				68A1E122246C3AF600FB5161 /* setup1.jpg */,
+				68A1E124246C3AF600FB5161 /* setup2.jpg */,
+				68A1E121246C3AF600FB5161 /* setup3.jpg */,
+				68A1E123246C3AF600FB5161 /* setup4.jpg */,
 			);
 			path = "readme-assets";
 			sourceTree = "<group>";
@@ -299,12 +311,16 @@
 				68E2E847245E28CE00840919 /* README.md in Resources */,
 				68A1E11F246C20CC00FB5161 /* img4.jpg in Resources */,
 				68A1E11E246C20CC00FB5161 /* img7.jpg in Resources */,
+				68A1E127246C3AF700FB5161 /* setup4.jpg in Resources */,
+				68A1E126246C3AF700FB5161 /* setup1.jpg in Resources */,
+				68A1E125246C3AF700FB5161 /* setup3.jpg in Resources */,
 				68A1E11C246C20CC00FB5161 /* img5.jpg in Resources */,
 				68E2E84A245E29D500840919 /* img1.jpg in Resources */,
 				68927AE0245F35E50017435F /* Pixabay.plist in Resources */,
 				68A1E11D246C20CC00FB5161 /* img3.jpg in Resources */,
 				684626BF245CE44300527E02 /* LaunchScreen.storyboard in Resources */,
 				684626BC245CE44300527E02 /* Assets.xcassets in Resources */,
+				68A1E128246C3AF700FB5161 /* setup2.jpg in Resources */,
 				68D74405246B160C001A7B99 /* pixabay-collections.gif in Resources */,
 				68A1E120246C20CC00FB5161 /* img6.jpg in Resources */,
 				68A1E11B246C20CC00FB5161 /* img2.jpg in Resources */,
