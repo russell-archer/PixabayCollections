@@ -55,27 +55,28 @@ Finally, open **SceneDelegate.swift** and modify the `scene(_:willConnectTo:opti
 ``` swift
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
-  var window: UIWindow?
+    var window: UIWindow?
 
-  func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-    // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-    // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-
-    guard let windowScene = (scene as? UIWindowScene) else { return }  // Get the window scene
-    window = UIWindow(frame: windowScene.coordinateSpace.bounds)  // Create a window
-    guard window != nil else { return }
-
-    // Assign the window scene to the window's window scene
-    window!.windowScene = windowScene
-
-    // Set the root view controller (to the nav controller)
-    window!.rootViewController = createNavController(with: createInitialViewControler())
-
-    // Make the window visible
-    window!.makeKeyAndVisible()
-  }
-:
-:
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
+        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
+        
+        guard let windowScene = (scene as? UIWindowScene) else { return }  // Get the window scene
+        window = UIWindow(frame: windowScene.coordinateSpace.bounds)  // Create a window
+        guard window != nil else { return }
+        
+        // Assign the window scene to the window's window scene
+        window!.windowScene = windowScene
+        
+        // Set the root view controller (to the nav controller)
+        window!.rootViewController = createNavController(with: createInitialViewControler())
+        
+        // Make the window visible
+        window!.makeKeyAndVisible()
+    }
+    
+    :
+    :
 ```
 ___
 
@@ -91,50 +92,50 @@ To keep configuration code out of the `ResultsViewController` we create `CustomT
 
 ``` swift
 class CustomTextField: UITextField {
-  :
-  :
+    :
+    :
     
-  private func config() {
-    translatesAutoresizingMaskIntoConstraints = false
-    layer.cornerRadius = 10
-    layer.borderWidth = 2
-    layer.borderColor = UIColor.systemGray4.cgColor
-    
-    textColor = .label
-    tintColor = .label
-    textAlignment = .center
-    minimumFontSize = 12
-
-    backgroundColor = .tertiarySystemBackground
-    autocorrectionType = .no
-    returnKeyType = .go
-    clearButtonMode = .whileEditing
-    placeholder = "Search text"
-    
-    // Support for dynamic type
-    font = UIFont.preferredFont(forTextStyle: .title2)
-    adjustsFontForContentSizeCategory = true
-    adjustsFontSizeToFitWidth = true
-  }
+    private func config() {
+        translatesAutoresizingMaskIntoConstraints = false
+        layer.cornerRadius = 10
+        layer.borderWidth = 2
+        layer.borderColor = UIColor.systemGray4.cgColor
+        
+        textColor = .label
+        tintColor = .label
+        textAlignment = .center
+        minimumFontSize = 12
+        
+        backgroundColor = .tertiarySystemBackground
+        autocorrectionType = .no
+        returnKeyType = .go
+        clearButtonMode = .whileEditing
+        placeholder = "Search text"
+        
+        // Support for dynamic type
+        font = UIFont.preferredFont(forTextStyle: .title2)
+        adjustsFontForContentSizeCategory = true
+        adjustsFontSizeToFitWidth = true
+    }
 }
 
 class CustomGoButton: UIButton {
-  :
-  :
+    :
+    :
     
-  private func config() {
-    layer.cornerRadius = 10
-    setTitleColor(.black, for: .normal)  
+    private func config() {
+        layer.cornerRadius = 10
+        setTitleColor(.black, for: .normal)  
         
-    // Turn constraints OFF as we'll be using auto layout
-    translatesAutoresizingMaskIntoConstraints = false  
-    
-    // Support for dynamic type
-    titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
-    titleLabel?.minimumScaleFactor = 0.5
-    titleLabel?.adjustsFontSizeToFitWidth = true
-    titleLabel?.adjustsFontForContentSizeCategory = true
-  }
+        // Turn constraints OFF as we'll be using auto layout
+        translatesAutoresizingMaskIntoConstraints = false  
+        
+        // Support for dynamic type
+        titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
+        titleLabel?.minimumScaleFactor = 0.5
+        titleLabel?.adjustsFontSizeToFitWidth = true
+        titleLabel?.adjustsFontForContentSizeCategory = true
+    }
 }
 ```
 
@@ -143,39 +144,40 @@ Here's the code for `SearchViewController`. Notice how we programmatically creat
 ``` swift
 class SearchViewController: UIViewController {
 
-  let searchTextField = CustomTextField(text: "Puppies")
-  let goButton = CustomGoButton(title: "Search")
+    let searchTextField = CustomTextField(text: "Puppies")
+    let goButton = CustomGoButton(title: "Search")
     
-  :
-  :    
-  private func configSearchTextField() {
-    view.addSubview(searchTextField)
-
-    searchTextField.delegate = self
-    searchTextField.translatesAutoresizingMaskIntoConstraints = false
+    :
+    :
     
-    NSLayoutConstraint.activate([
-        searchTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: UIConstants.padding),
-        searchTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: UIConstants.padding),
-        searchTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -UIConstants.padding),
-        searchTextField.heightAnchor.constraint(equalToConstant: 50)
-    ])
-  }
+    private func configSearchTextField() {
+        view.addSubview(searchTextField)
+        
+        searchTextField.delegate = self
+        searchTextField.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            searchTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: UIConstants.padding),
+            searchTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: UIConstants.padding),
+            searchTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -UIConstants.padding),
+            searchTextField.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
     
-  private func configGoButton() {
-    view.addSubview(goButton)
-    goButton.addTarget(self, action: #selector(goButtonTapped), for: .touchUpInside)
-
-    NSLayoutConstraint.activate([
-        goButton.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 25),
-        goButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        goButton.widthAnchor.constraint(equalToConstant: 200),
-        goButton.heightAnchor.constraint(equalToConstant: 50)
-    ])
-  }
+    private func configGoButton() {
+        view.addSubview(goButton)
+        goButton.addTarget(self, action: #selector(goButtonTapped), for: .touchUpInside)
+        
+        NSLayoutConstraint.activate([
+            goButton.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 25),
+            goButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            goButton.widthAnchor.constraint(equalToConstant: 200),
+            goButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
   
-  :
-  :
+    :
+    :
 }
 ```
 ___
@@ -204,7 +206,7 @@ For example, we can look for *coffee* photos (the **q** parameter must be URL en
 
 Note that there are also **page** and **per_page** parameters which we can use to implement lazily-loaded paginated data.
 
-We can test example queries in an HTTP client such as **Paw** (https://paw.cloud/):
+We can test example queries in an HTTP client such as **Paw** (https://paw.cloud/), or simply in a browser:
 
 ![](./readme-assets/pixabay3.jpg)
 
@@ -258,26 +260,27 @@ Note how the method has a `completion` parameter in the form of a closure that t
 
 ```swift 
 func loadImages(searchFor: String, page: Int = 1, completion: @escaping (Result<PixabayData?, NetworkHelperError>) -> Void) {
-  :
-  :
+    :
+    :
   
-  let task = URLSession.shared.dataTask(with: url) { json, response, error in       
-    :
-    :
-            
-    let decoder = JSONDecoder()
-    decoder.keyDecodingStrategy = .convertFromSnakeCase
+    let task = URLSession.shared.dataTask(with: url) { json, response, error in
     
-    // Attempt to decode the JSON as a PixabayData object
-    let pixabayData = try? decoder.decode(PixabayData.self, from: json!)
+        :
+        :
             
-    guard pixabayData != nil else {
-      completion(.failure(.notDecodable))
-      return
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        
+        // Attempt to decode the JSON as a PixabayData object
+        let pixabayData = try? decoder.decode(PixabayData.self, from: json!)
+        
+        guard pixabayData != nil else {
+            completion(.failure(.notDecodable))
+            return
+        }
+        
+        DispatchQueue.main.async { completion(.success(pixabayData!)) }
     }
-            
-    DispatchQueue.main.async { completion(.success(pixabayData!)) }
-  }
         
   task.resume()
 }
@@ -358,7 +361,11 @@ ___
 
 ## Results View Controller
 
-The `ResultsViewController` is the most complex view controller in the project. It has to handle:
+The `ResultsViewController` is the most complex view controller in the project. 
+
+![](./readme-assets/img3.jpg)
+
+It has to handle:
 
 * Getting **JSON** data from the Pixabay API (see below)
 * Getting **preview images** from Pixabay and displaying them in a collection view
@@ -366,8 +373,107 @@ The `ResultsViewController` is the most complex view controller in the project. 
 * **Filtering** images by tag. Changes to the collection view of images are controlled by a **diffable data source**
 * **Paging** data. When the user has scrolled to the bottom of the collection view get another page of data and preview images
 
-``` swift
+When the results view controller is loaded we setup the collection view and it’s data source as follows:
 
+``` swift
+func configCollectionView() {
+    // Set the collectionView to fill our view
+    collectionView = UICollectionView(
+        frame: view.bounds, collectionViewLayout: CollectionViewHelper.createThreeColumnFlowLayout(in: view))
+
+    view.addSubview(collectionView!)
+    collectionView.delegate = self
+    collectionView.backgroundColor = .systemBackground
+    collectionView.register(PixabayImageCell.self, forCellWithReuseIdentifier: PixabayImageCell.reuseId)
+}
+
+func configureDataSource() {
+    dataSource = UICollectionViewDiffableDataSource<CollectionViewSection, PixabayImage>(collectionView: collectionView) {
+        collectionView, indexPath, data -> UICollectionViewCell? in
+            
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PixabayImageCell.reuseId, for: indexPath) as! PixabayImageCell
+            // Setting the cell's previewImageUrl causes the preview image to be downloaded asynchronously from Pixabay
+            cell.previewImageUrl = data.previewURL
+            return cell
+    }
+}
 ```
 
-TODO...incomplete
+We use a custom `UICollectionViewCell`-derived cell `PixabayImageCell`, which essentially contains a `UIImageView` and a `previewImageUrl` property.
+When `previewImageUrl` is set we get `NetworkHelper` to asynchronously load the required image from Pixabay. 
+When it’s loaded we set the `UIImageView.image` property. In this way all the preview images used in the collection view are loaded *without blocking the UI thread*:
+
+``` swift
+class PixabayImageCell: UICollectionViewCell {
+    
+    static let reuseId = "PixabayImageCell"
+
+    var previewImageUrl: String = "" {
+        didSet {
+            guard !previewImageUrl.isEmpty else { return }           
+            NetworkHelper.shared.loadImage(from: previewImageUrl) { image in
+                guard let image = image else { return }
+                self.imageView.image = image
+            }
+        }
+    }
+    
+    private var imageView = UIImageView()
+
+    :
+    :
+}
+```
+
+After the view controller has loaded we get the first page of data via `NetworkHelper`:
+
+``` swift
+private func getSearchResults() {
+    :
+    :
+    
+    NetworkHelper.shared.loadImages(searchFor: searchText!, page: page) { [weak self] result in
+        :
+        :
+
+        switch result {
+        case .failure(let error):
+            :
+            :
+            return
+
+        case .success(let data):
+            :
+            :
+            if self.page == 1 {
+                self.imageData = data!.hits
+                self.totalImagesAvailable = data!.totalHits
+            } else {
+                self.imageData.append(contentsOf: data!.hits)
+            }
+            
+            self.getAvailableTags()
+            DispatchQueue.main.async { self.updateData() }
+            return
+        }
+    }
+}
+```
+
+Once the data has been successfully returned in and decoded `getSearchResults()` makes a call to `updateData()`. 
+A snapshot of the data is created and changes applied to the data source. 
+This results in multiple calls to the closure passed to `configureDataSource` so that each (visible) cell in the collectionView is updated.
+
+``` swift
+func updateData() {
+    var snapshot = NSDiffableDataSourceSnapshot<CollectionViewSection, PixabayImage>()
+    snapshot.appendSections([.main])
+    snapshot.appendItems(imageDataIsFiltered ? imageDataFiltered : imageData)
+    DispatchQueue.main.async {
+        self.dataSource.apply(snapshot, animatingDifferences: true)
+        :
+        :
+    }
+}
+```
+

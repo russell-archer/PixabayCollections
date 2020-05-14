@@ -55,6 +55,7 @@ class ResultsViewController: UIViewController {
     }
     
     func configCollectionView() {
+        // Set the collectionView to fill our view
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: CollectionViewHelper.createThreeColumnFlowLayout(in: view))
         view.addSubview(collectionView!)
         collectionView.delegate = self
