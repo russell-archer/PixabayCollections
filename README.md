@@ -81,8 +81,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 ___
 
 ## Search View Controller
-
-The search view controller is very simple: a `UITextField` and `UIButton`:
+`SearchViewController` is very simple: a `UITextField` and `UIButton`:
 
 ![](./readme-assets/img2.jpg)
 
@@ -361,7 +360,7 @@ ___
 
 ## Results View Controller
 
-The `ResultsViewController` is the most complex view controller in the project. 
+`ResultsViewController` is the most complex view controller in the project. 
 
 ![](./readme-assets/img3.jpg)
 
@@ -373,7 +372,7 @@ It has to handle:
 * **Filtering** images by tag. Changes to the collection view of images are controlled by a **diffable data source**
 * **Paging** data. When the user has scrolled to the bottom of the collection view get another page of data and preview images
 
-When the results view controller is loaded we setup the collection view and it’s data source as follows:
+When the results view controller is loaded we setup the collection view and its data source as follows:
 
 ``` swift
 func configCollectionView() {
@@ -476,4 +475,66 @@ func updateData() {
     }
 }
 ```
+
+___
+
+## Detail View Controller
+
+`DetailViewController` is fairly simple: 
+
+![](./readme-assets/img5.jpg)
+
+All it has to handle is:
+
+* Getting a full-size version of the selected preview image
+* Creating a menu of options
+
+When `ResultsViewController` sets the `pixabayImage` property in `DetailViewController` the full-size image is loaded asynchronously through `CustomImageView`:
+
+``` swift
+class DetailViewController: UIViewController {
+
+    var pixabayImage: PixabayImage? {
+        didSet {
+            guard pixabayImage != nil else { return }
+            spinner.startAnimating()
+            loading = true
+            imageView.imageUrl = pixabayImage!.largeImageURL  // imageLoadComplete(success:) called when image loaded
+        }
+    }
+        
+    private var imageView = CustomImageView(frame: .zero)
+    :
+    :
+}
+    
+protocol CustomImageViewDelegate: class {
+    func imageLoadComplete(success: Bool)
+}
+
+class CustomImageView: UIImageView {
+        
+    weak var delegate: CustomImageViewDelegate?
+    
+    var imageUrl: String? {
+        didSet {
+            guard let iu = imageUrl else { return }
+            NetworkHelper.shared.loadImage(from: iu) { [weak self] img in
+                guard let self = self else { return }
+                guard let img = img else {
+                    DispatchQueue.main.async { self.delegate?.imageLoadComplete(success: false) }
+                    return
+                }
+                    
+                self.image = img
+                DispatchQueue.main.async { self.delegate?.imageLoadComplete(success: true) }
+            }
+        }
+    }
+
+    :
+    :
+}    
+```
+
 
