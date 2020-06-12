@@ -12,3 +12,7 @@ enum UIConstants {
     static let padding: CGFloat     = 10
     static let cellPadding: CGFloat = 8
 }
+
+enum DataConstants {
+    static let apiKeyDefault = "your-key-goes-here"
+}

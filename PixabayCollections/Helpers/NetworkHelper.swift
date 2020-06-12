@@ -32,11 +32,17 @@ struct NetworkHelper {
             let scheme      = plistHelper.readProperty(key: "scheme"),
             let host        = plistHelper.readProperty(key: "host"),
             let path        = plistHelper.readProperty(key: "path"),
-            let key         = plistHelper.readProperty(key: "key"),
-            let imageType   = plistHelper.readProperty(key: "image_type") else {
+            let imageType   = plistHelper.readProperty(key: "image_type"),
+            let key         = plistHelper.readProperty(key: "key") else {
                 
                 completion(.failure(.endPointPropertiesMissing))
                 return
+        }
+        
+        guard key != DataConstants.apiKeyDefault else {
+            print("You need to add your own Pixabay API Key to Pixabay.plist")
+            completion(.failure(.endPointPropertiesMissing))
+            return
         }
         
         var urlComponents = URLComponents()
